@@ -1,0 +1,57 @@
+QUESTION 3:  What are the job titles, average salaries, experience levels,
+and remote work options for job postings with available salary data,
+ordered by job ID? Showcasing using CASE Expressions.
+
+QUERY:
+SELECT
+    job_title_short,
+    salary_year_avg,
+CASE
+    WHEN job_title ILIKE '%Senior%' THEN 'Senior'
+    WHEN job_title ILIKE '%Manager%' OR job_title ILIKE '%Lead%' THEN 'Manager/Lead'
+    WHEN job_title ILIKE '%Junior%' OR job_title ILIKE '%ENTRY%' THEN 'Junior/Entry'
+    ELSE 'Not Specified'
+END AS experience_level,
+CASE    
+    WHEN job_work_from_home = TRUE THEN 'YES'
+    WHEN job_work_from_home = FALSE THEN 'NO'
+END AS remote_option
+FROM
+    job_postings_fact
+LEFT JOIN company_dim ON job_postings_fact.company_id = company_dim.company_id
+WHERE
+    salary_year_avg IS NOT NULL
+ORDER BY
+    job_id;
+
+
+ANSWER:
+  {
+    "job_title_short": "Data Engineer",
+    "salary_year_avg": "195000.0",
+    "experience_level": "Manager/Lead",
+    "remote_option": "NO"
+  },
+  {
+    "job_title_short": "Data Engineer",
+    "salary_year_avg": "125000.0",
+    "experience_level": "Not Specified",
+    "remote_option": "NO"
+  },
+  {
+    "job_title_short": "Data Analyst",
+    "salary_year_avg": "111175.0",
+    "experience_level": "Not Specified",
+    "remote_option": "NO"
+  },
+  {
+    "job_title_short": "Data Scientist",
+    "salary_year_avg": "112500.0",
+    "experience_level": "Not Specified",
+    "remote_option": "NO"
+  }  
+
+ VERBAL EXP:
+ This SQL query retrieves job postings, including job titles and average salaries. 
+ It categorizes positions into experience levels (Senior, Manager/Lead, Junior/Entry, or Not Specified)
+ based on keywords and indicates remote work options (YES or NO). 
