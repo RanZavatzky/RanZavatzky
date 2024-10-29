@@ -1,0 +1,46 @@
+/*Question 2: What are the top 5 most in-demand skills for job postings in New York that offer health insurance benefits,
+based on the number of job listings available? /*
+
+SELECT
+     COUNT(skills_job_dim.job_id) AS demand_count,
+    skills_dim.skills
+FROM job_postings_fact
+INNER JOIN  skills_job_dim ON job_postings_fact.job_id = skills_job_dim.job_id
+INNER JOIN skills_dim ON skills_job_dim.skill_id = skills_dim.skill_id
+WHERE
+    job_health_insurance = TRUE AND
+    job_location = 'New York'
+GROUP BY
+     skills
+ORDER BY
+     demand_count DESC
+LIMIT 5;
+
+/*ANSWER/*
+[
+  {
+    "demand_count": "34",
+    "skills": "sql"
+  },
+  {
+    "demand_count": "30",
+    "skills": "python"
+  },
+  {
+    "demand_count": "16",
+    "skills": "aws"
+  },
+  {
+    "demand_count": "14",
+    "skills": "spark"
+  },
+  {
+    "demand_count": "13",
+    "skills": "excel"
+  }
+]
+
+Answer Description: 
+Today, in American healthcare, it is very expensive,
+leading many job seekers to prioritize positions that offer health insurance benefits.
+This SQL query identifies the top 5 most in-demand skills for job postings in New York that provide health insurance.
